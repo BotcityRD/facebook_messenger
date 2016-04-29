@@ -23,13 +23,13 @@ defmodule FacebookMessenger.Sender do
   @doc """
   creates a payload to send to facebook
 
-    * :recepient - the recepient to send the message to
-    * :message - the message to send
+  * :recepient - the recepient to send the message to
+  * :message - the message to send
   """
   def payload(recepient, message) do
     %{
       recipient: %{id: recepient},
-      message: %{text: message}
+      message: create_message(message)
     }
   end
 
@@ -51,6 +51,14 @@ defmodule FacebookMessenger.Sender do
   def url do
     query = "access_token=#{page_token}"
     "https://graph.facebook.com/v2.6/me/messages?#{query}"
+  end
+
+  defp create_message(%{} = message) do
+    message
+  end
+
+  defp create_message(message) do
+    %{text: message}
   end
 
   defp page_token do
